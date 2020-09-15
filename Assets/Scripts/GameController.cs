@@ -17,6 +17,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject BulletPrefab;
     [SerializeField] private GameObject PlayerPrefab;
 
+    BlobAssetStore blob;
+
     private EntityManager entityManager;
     private World world;
 
@@ -28,13 +30,13 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BlobAssetStore blob = new BlobAssetStore();
+        blob = new BlobAssetStore();
         GameObjectConversionSettings settings = GameObjectConversionSettings.FromWorld(world, blob);
         Entity AsteroidPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(AsteroidPrefab, settings);
         Entity PlayerPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(PlayerPrefab, settings);
         Entity BulletPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(BulletPrefab, settings);
 
-
+        
         InstantiateGrid(AsteroidPrefabEntity, 160, 160, 3.0f);
         Entity player = InstantiateEntity(PlayerPrefabEntity, new float3(0, 0, 0));
 
@@ -67,16 +69,26 @@ public class GameController : MonoBehaviour
             for (int j = 0; j < GridY; j++)
             {
                var Entity = InstantiateEntity(prefab, new float3(Spacing * (i-(GridX/2.0f)) -Spacing/2.0f, Spacing * (j - (GridY / 2.0f)) - Spacing / 2.0f, 0));
+                float x = UnityEngine.Random.Range(-1.0f, 1.0f);
+                float y = UnityEngine.Random.Range(-1.0f, 1.0f);
                 entityManager.SetComponentData(Entity, new PhysicsVelocity
                 {
-                    Linear = new float3(UnityEngine.Random.Range(-1.0f, 1.0f), UnityEngine.Random.Range(-1.0f, 1.0f), 0)
+                    Linear = new float3(x, y, 0)
+
+                });
+                entityManager.SetComponentData(Entity, new AsteroidComponent
+                {
+                    startVelocity = entityManager.GetComponentData<PhysicsVelocity>(Entity).Linear
 
                 });
             }
         }
     }
 
-
+    private void OnDestroy()
+    {
+        blob.Dispose();
+    }
 
 }
 

@@ -26,7 +26,6 @@ public class ShooterSystem : ComponentSystem
                     Linear = direction * 15
 
                 });
-
                 playerData.entityManager.SetComponentData(bullet, new Rotation
                 {
                     Value = math.mul(rotation.Value, quaternion.RotateZ(math.radians(90)))
@@ -35,8 +34,8 @@ public class ShooterSystem : ComponentSystem
                 playerData.entityManager.SetComponentData(bullet, new LifeTimeComponent
                 {
                     Lifetime = 0,
-                    thisEntity = bullet,
-                    entityManager = playerData.entityManager
+                    startVelocity = direction * 15
+
                 });
 
             }

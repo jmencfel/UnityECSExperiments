@@ -2,9 +2,7 @@
 using Unity.Mathematics;
 
 [GenerateAuthoringComponent]
-public struct LifeTimeComponent : IComponentData
+public struct AsteroidComponent : IComponentData
 {
-    public float Lifetime;
     public float3 startVelocity;
-
 }

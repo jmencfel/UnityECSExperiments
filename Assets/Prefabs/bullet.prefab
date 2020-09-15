@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3126372338116240523}
   - component: {fileID: 7909473377774144061}
   - component: {fileID: 3542963986007190187}
-  - component: {fileID: 4404951995346886005}
   - component: {fileID: 17440608500446972}
+  - component: {fileID: 5268447596896508596}
   - component: {fileID: 8250915184177262572}
   m_Layer: 0
   m_Name: bullet
@@ -99,8 +99,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MotionType: 0
   m_Mass: 1
-  m_LinearDamping: 0.01
-  m_AngularDamping: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0
   m_InitialLinearVelocity:
     x: 0
     y: 0
@@ -134,20 +134,6 @@ MonoBehaviour:
     Tag05: 0
     Tag06: 0
     Tag07: 0
---- !u!114 &4404951995346886005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7257563760778616739}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e828ffb8e2dbcf44a9daba0d40f1f0b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Lifetime: 0
-  thisEntity: {fileID: 0}
 --- !u!114 &17440608500446972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,8 +187,8 @@ MonoBehaviour:
     m_Friction:
       m_Override: 0
       m_Value:
-        Value: 0.5
-        CombineMode: 0
+        Value: 0
+        CombineMode: 1
     m_Restitution:
       m_Override: 0
       m_Value:
@@ -221,6 +207,23 @@ MonoBehaviour:
       m_Override: 0
       m_Value: 0000000000000000
   m_ConvexRadius_Deprecated: -1
+--- !u!114 &5268447596896508596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7257563760778616739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e828ffb8e2dbcf44a9daba0d40f1f0b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Lifetime: 0
+  startVelocity:
+    x: 0
+    y: 0
+    z: 0
 --- !u!114 &8250915184177262572
 MonoBehaviour:
   m_ObjectHideFlags: 0

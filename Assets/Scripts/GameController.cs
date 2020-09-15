@@ -11,11 +11,11 @@ using Unity.Physics;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private Mesh mesh;
-    [SerializeField] private UnityEngine.Material player_material;
-    [SerializeField] private UnityEngine.Material asteroid_material;
+
 
     [SerializeField] private GameObject AsteroidPrefab;
+    [SerializeField] private GameObject BulletPrefab;
+    [SerializeField] private GameObject PlayerPrefab;
 
     private EntityManager entityManager;
     private World world;
@@ -30,24 +30,35 @@ public class GameController : MonoBehaviour
     {
         BlobAssetStore blob = new BlobAssetStore();
         GameObjectConversionSettings settings = GameObjectConversionSettings.FromWorld(world, blob);
-        var AsteroidPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(AsteroidPrefab, settings);
+        Entity AsteroidPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(AsteroidPrefab, settings);
+        Entity PlayerPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(PlayerPrefab, settings);
+        Entity BulletPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(BulletPrefab, settings);
+
 
         InstantiateGrid(AsteroidPrefabEntity, 160, 160, 3.0f);
+        Entity player = InstantiateEntity(PlayerPrefabEntity, new float3(0, 0, 0));
+
+        entityManager.SetComponentData(player, new PlayerDataComponent
+        {
+            angularSpeed = 180,
+            movementSpeed = 5,
+            entityManager = entityManager,
+            BulletPrefab = BulletPrefabEntity
+        });
+
+
+
     }
 
-    private void InstantiateEntity(Entity prefab, float3 pos)
+    private Entity InstantiateEntity(Entity prefab, float3 pos)
     {
         Entity Entity = entityManager.Instantiate(prefab);
         entityManager.SetComponentData(Entity, new Translation
         {
             Value = pos
         });
-        entityManager.SetComponentData(Entity, new PhysicsVelocity
-        {
-            Linear = new float3(UnityEngine.Random.Range(-1.0f,1.0f), UnityEngine.Random.Range(-1.0f, 1.0f), 0)
-           
-        });
-
+       
+        return Entity;
     }
     private void InstantiateGrid(Entity prefab, int GridX, int GridY, float Spacing)
     {
@@ -55,7 +66,12 @@ public class GameController : MonoBehaviour
         {
             for (int j = 0; j < GridY; j++)
             {
-                InstantiateEntity(prefab, new float3(Spacing * (i-(GridX/2.0f)), Spacing * (j - (GridY / 2.0f)), 0));
+               var Entity = InstantiateEntity(prefab, new float3(Spacing * (i-(GridX/2.0f)) -Spacing/2.0f, Spacing * (j - (GridY / 2.0f)) - Spacing / 2.0f, 0));
+                entityManager.SetComponentData(Entity, new PhysicsVelocity
+                {
+                    Linear = new float3(UnityEngine.Random.Range(-1.0f, 1.0f), UnityEngine.Random.Range(-1.0f, 1.0f), 0)
+
+                });
             }
         }
     }
